@@ -11,7 +11,7 @@ class Booking extends Model
 
     protected $fillable = [
         'name', 'gender', 'identity_number', 'room_id',
-        'booking_date', 'duration', 'breakfast', 'total_price'
+        'booking_date', 'duration', 'breakfast', 'discount', 'total_price'
     ];
 
     public function room()

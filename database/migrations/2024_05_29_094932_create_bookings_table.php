@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('booking_date');
             $table->integer('duration');
             $table->boolean('breakfast')->default(false);
+            $table->decimal('discount', 8, 2)->default(0);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });

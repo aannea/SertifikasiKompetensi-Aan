@@ -20,7 +20,7 @@ class BookingController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string',
-                'gender' => 'required|in:Male,Female',
+                'gender' => 'required|in:Cowo,Cewe',
                 'identity_number' => 'required|digits:16',
                 'room_id' => 'required|exists:rooms,id',
                 'booking_date' => 'required|date_format:d/m/Y',
@@ -30,12 +30,14 @@ class BookingController extends Controller
 
             $room = Room::findOrFail($request->room_id);
             $duration = $request->duration;
-            $breakfast = $request->has('breakfast'); // Jika checkbox breakfast dicentang, hasilnya true, jika tidak, false.
+            $breakfast = $request->has('breakfast');
             $roomPrice = $room->price;
             $totalPrice = $roomPrice * $duration;
 
+            $discount = 0;
             if ($duration > 3) {
                 $totalPrice *= 0.9;
+                $discount = 10;
             }
             if ($breakfast) {
                 $totalPrice += 80000 * $duration;
@@ -48,13 +50,13 @@ class BookingController extends Controller
                 'room_id' => $request->room_id,
                 'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->format('Y-m-d'),
                 'duration' => $request->duration,
-                'breakfast' => $breakfast, // Simpan nilai boolean langsung
+                'breakfast' => $breakfast,
+                'discount' => $discount,
                 'total_price' => $totalPrice,
             ]);
 
             return redirect('/')->with('success', 'Booking berhasil dibuat!');
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan, kembalikan pesan kesalahan
             return back()->withInput()->withErrors(['error' => 'Terjadi kesalahan saat membuat booking. Silakan coba lagi.']);
         }
     }

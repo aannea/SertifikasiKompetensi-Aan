@@ -1,7 +1,7 @@
 @extends('components.app')
 
 @section('content')
-    <h2>Detail Booking</h2>
+    <h2>Detail Pesanan</h2>
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -13,6 +13,7 @@
                     <th>Tanggal Booking</th>
                     <th>Durasi (malam)</th>
                     <th>Sarapan</th>
+                    <th>Discount</th>
                     <th>Total Harga</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                         <td>{{ $booking->booking_date }}</td>
                         <td>{{ $booking->duration }}</td>
                         <td>{{ $booking->breakfast ? 'Ya' : 'Tidak' }}</td>
+                        <td>{{ $booking->discount }}%</td>
                         <td>Rp{{ number_format($booking->total_price, 2) }}</td>
                     </tr>
                 @endforeach
@@ -35,6 +37,6 @@
     <form action="{{ route('bookings.deleteAll') }}" method="POST">
         @csrf
         @method('DELETE')
-        <button type="submit" class="btn btn-danger">Hapus Semua Booking</button>
+        <button type="submit" class="btn btn-danger">Hapus Semua Pesanan</button>
     </form>
 @endsection

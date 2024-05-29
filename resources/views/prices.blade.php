@@ -1,12 +1,12 @@
 @extends('components.app')
 
 @section('content')
-    <h2>Room Prices</h2>
+    <h2>Harga Kamar</h2>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Room Type</th>
-                <th>Price</th>
+                <th>Tipe Kamar</th>
+                <th>Harga Kamar</th>
             </tr>
         </thead>
         <tbody>

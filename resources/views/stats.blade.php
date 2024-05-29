@@ -1,7 +1,7 @@
 @extends ('components.app')
 
 @section('content')
-<h2>Room Booking Statistics</h2>
+<h2>Grafik Pemesanan Kamar</h2>
 <canvas id="statsChart" width="400" height="200"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -11,7 +11,7 @@ var statsChart = new Chart(ctx, {
     data: {
         labels: @json($roomTypes),
         datasets: [{
-            label: 'Number of Bookings',
+            label: 'Banyaknya Pesanan',
             data: @json($bookingsCount),
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
