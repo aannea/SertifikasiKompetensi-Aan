@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-
     public function create()
     {
         $rooms = Room::all();
@@ -18,15 +17,15 @@ class BookingController extends Controller
 
     public function store(Request $request){
         try {
-            $request->validate([
-                'name' => 'required|string',
-                'gender' => 'required|in:Cowo,Cewe',
-                'identity_number' => 'required|digits:16',
-                'room_id' => 'required|exists:rooms,id',
-                'booking_date' => 'required|date_format:d/m/Y',
-                'duration' => 'required|integer|min:1',
-                'breakfast' => 'string',
-            ]);
+            // $request->validate([
+            //     'name' => 'required|string',
+            //     'gender' => 'required|in:Cowo,Cewe',
+            //     'identity_number' => 'required|digits:16',
+            //     'room_id' => 'required|exists:rooms,id',
+            //     'booking_date' => 'required|date_format:d/m/Y',
+            //     'duration' => 'required|integer|min:1',
+            //     'breakfast' => 'string',
+            // ]);
 
             $room = Room::findOrFail($request->room_id);
             $duration = $request->duration;
@@ -48,7 +47,7 @@ class BookingController extends Controller
                 'gender' => $request->gender,
                 'identity_number' => $request->identity_number,
                 'room_id' => $request->room_id,
-                'booking_date' => Carbon::createFromFormat('d/m/Y', $request->booking_date)->format('Y-m-d'),
+                'booking_date' => $request->booking_date,
                 'duration' => $request->duration,
                 'breakfast' => $breakfast,
                 'discount' => $discount,
