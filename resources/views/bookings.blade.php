@@ -21,7 +21,7 @@
         </div>
         <div class="mb-3">
             <label for="identity_number" class="form-label">Nomor KTP</label>
-            <input type="text" class="form-control" id="identity_number" name="identity_number" required>
+            <input type="number" class="form-control" id="identity_number" name="identity_number" required>
             <div class="invalid-feedback">Isian salah.. data harus 16 digit</div>
         </div>
         <div class="mb-3">
@@ -29,7 +29,8 @@
             <select class="form-control" id="room_id" name="room_id" required>
                 <option value="">Pilih Tipe Kamar</option>
                 @foreach ($rooms as $room)
-                    <option value="{{ $room->id }}" data-price="{{ $room->price }}" data-type="{{ $room->type }}">{{ $room->type }}</option>
+                    <option value="{{ $room->id }}" data-price="{{ $room->price }}" data-type="{{ $room->type }}">
+                        {{ $room->type }}</option>
                 @endforeach
             </select>
         </div>
@@ -59,10 +60,15 @@
     </form>
 
     <script>
+        // untuk format angka dalam uang
         function formatNumber(number) {
-            return number.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return number.toLocaleString('id-ID', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
         }
 
+        //kalkulasi total
         function calculateTotal() {
             const duration = parseInt(document.getElementById('duration').value);
             const roomSelect = document.getElementById('room_id');
@@ -90,6 +96,7 @@
             return discount;
         }
 
+        //mengkonfirmasi booking
         function confirmBooking() {
             const name = document.getElementById('name').value;
             const gender = document.querySelector('input[name="gender"]:checked').value;
@@ -104,39 +111,33 @@
             const totalPrice = document.getElementById('totalPrice').innerText;
             const discount = calculateTotal();
 
-            const imageUrl = `/img/${roomTypeData}.jpeg`;
+            // Memeriksa panjang nomor KTP
+            if (identityNumber.length !== 16) {
+                alert('Nomor KTP harus terdiri dari 16 digit.');
+                return;
+            }
 
             const confirmationMessage = `
-                Nama: ${name}\n
-                Jenis Kelamin: ${gender}\n
-                Nomor KTP: ${identityNumber}\n
-                Tipe Kamar: ${roomType}\n
-                Harga Kamar: Rp. ${formatNumber(roomPrice)}\n
-                Tanggal: ${bookingDate}\n
-                Lama (malam): ${duration}\n
-                Dengan Sarapan: ${breakfast}\n
-                Diskon: ${discount}%\n
-                Total Harga: Rp. ${totalPrice}
-            `;
+        Nama: ${name}\n
+        Jenis Kelamin: ${gender}\n
+        Nomor KTP: ${identityNumber}\n
+        Tipe Kamar: ${roomType}\n
+        Harga Kamar: Rp. ${formatNumber(roomPrice)}\n
+        Tanggal: ${bookingDate}\n 
+        Lama (malam): ${duration} Hari\n
+        Dengan Sarapan: ${breakfast}\n
+        Diskon: ${discount}%\n
+        Total Harga: Rp. ${totalPrice}
+    `;
 
             if (confirm(confirmationMessage)) {
-                const confirmationHtml = `
-                    <p>${confirmationMessage.replace(/\n/g, '<br>')}</p>
-                    <img src="${imageUrl}" alt="Room Image" style="max-width: 100%; height: auto;">
-                `;
-
-                const confirmationDiv = document.createElement('div');
-                confirmationDiv.innerHTML = confirmationHtml;
-                document.body.appendChild(confirmationDiv);
-
-                setTimeout(() => {
-                    alert(confirmationMessage);
-                    document.getElementById('bookingForm').submit();
-                }, 100);
+                // alert(confirmationMessage);
+                document.getElementById('bookingForm').submit();
             }
         }
 
-        document.getElementById('identity_number').addEventListener('input', function () {
+
+        document.getElementById('identity_number').addEventListener('input', function() {
             const identityNumber = document.getElementById('identity_number');
             if (identityNumber.value.length !== 16) {
                 identityNumber.classList.add('is-invalid');

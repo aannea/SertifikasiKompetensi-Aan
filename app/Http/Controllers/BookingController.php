@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Room;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 
+//fungsi untuk booking ke database
 class BookingController extends Controller
 {
     public function create()
@@ -15,17 +15,17 @@ class BookingController extends Controller
         return view('bookings', compact('rooms'));
     }
 
+    //fungsi untuk memasukkan tabel/membuat row baru pada tabel
     public function store(Request $request){
         try {
-            // $request->validate([
-            //     'name' => 'required|string',
-            //     'gender' => 'required|in:Cowo,Cewe',
-            //     'identity_number' => 'required|digits:16',
-            //     'room_id' => 'required|exists:rooms,id',
-            //     'booking_date' => 'required|date_format:d/m/Y',
-            //     'duration' => 'required|integer|min:1',
-            //     'breakfast' => 'string',
-            // ]);
+            $request->validate([
+                'name' => 'required|string',
+                'gender' => 'required|in:Cowo,Cewe',
+                'identity_number' => 'required|digits:16',
+                'room_id' => 'required|exists:rooms,id',
+                'duration' => 'required|integer|min:1',
+                'breakfast' => 'string',
+            ]);
 
             $room = Room::findOrFail($request->room_id);
             $duration = $request->duration;
@@ -60,6 +60,7 @@ class BookingController extends Controller
         }
     }
 
+    //fungsi untuk menampilkan grafik dengan memanggil stats
     public function showStats(){
         $roomTypes = Room::pluck('type');
         $bookingsCount = Room::withCount('bookings')->pluck('bookings_count');
